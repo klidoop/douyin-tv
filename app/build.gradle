@@ -20,8 +20,8 @@ android {
         // GeckoView requires Android 8.0 (API 26). XGIMI Z8X = Android 8.0 -> OK.
         minSdk 26
         targetSdk 34
-        versionCode 20
-        versionName "2.0.0"
+        versionCode 21
+        versionName "2.0.1"
     }
 
     // One APK per CPU architecture keeps each file ~60-70MB instead of ~140MB.
