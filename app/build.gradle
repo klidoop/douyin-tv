@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// GeckoView = Firefox's rendering engine, shipped INSIDE the APK.
+// The device's own (possibly ancient) System WebView is never used.
+def geckoviewVersion = "158.0.20261021001945"
+
+android {
+    namespace 'com.douyin.tv'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.douyin.tv"
+        // GeckoView requires Android 8.0 (API 26). XGIMI Z8X = Android 8.0 -> OK.
+        minSdk 26
+        targetSdk 34
+        versionCode 20
+        versionName "2.0.0"
+    }
+
+    // One APK per CPU architecture keeps each file ~60-70MB instead of ~140MB.
+    // Install the arm64-v8a one first; fall back to armeabi-v7a if it refuses.
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'arm64-v8a', 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../keystore/douyin-tv-release.keystore")
+            storePassword "douyintv2024"
+            keyAlias "douyintv"
+            keyPassword "douyintv2024"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    packagingOptions {
+        jniLibs {
+            // GeckoView ships uncompressed native libs and loads them in place.
+            useLegacyPackaging = false
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+
+    implementation "org.mozilla.geckoview:geckoview:${geckoviewVersion}"
+}

@@ -1,0 +1,38 @@
+# Gecko preferences tuned for low-RAM TV boxes / projectors (1.5–2 GB).
+# Read by GeckoRuntimeSettings.configFilePath at startup.
+prefs:
+  # One content process instead of per-site isolation — the biggest memory win.
+  fission.autostart: false
+  dom.ipc.processCount: 1
+  dom.ipc.processCount.web: 1
+  dom.ipc.processPrelaunch.enabled: false
+  dom.ipc.keepProcessesAlive.web: 0
+
+  # Smaller caches, fewer history entries kept in memory.
+  browser.cache.memory.capacity: 16384
+  browser.sessionhistory.max_entries: 8
+  browser.sessionhistory.max_total_viewers: 0
+  image.mem.decode_bytes_at_a_time: 65536
+  image.cache.size: 2097152
+
+  # More aggressive GC on memory pressure.
+  javascript.options.mem.gc_incremental: true
+  javascript.options.mem.high_water_mark: 64
+  memory.free_dirty_pages: true
+
+  # Media: let the feed autoplay with sound (we are a TV app, not a browser).
+  media.autoplay.default: 0
+  media.autoplay.blocking_policy: 0
+  media.block-autoplay-until-in-foreground: false
+  # Prefer hardware (MediaCodec) decoding — critical on weak SoCs.
+  media.android-media-codec.enabled: true
+  media.android-media-codec.preferred: true
+
+  # Do not phone home.
+  datareporting.healthreport.uploadEnabled: false
+  toolkit.telemetry.enabled: false
+  browser.safebrowsing.malware.enabled: false
+  browser.safebrowsing.phishing.enabled: false
+  network.prefetch-next: false
+  network.dns.disablePrefetch: true
+  network.http.speculative-parallel-limit: 0

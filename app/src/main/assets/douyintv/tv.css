@@ -1,0 +1,61 @@
+/* TV layout trimming for douyin.com.
+   Goal: full-bleed video, nothing else rendering in the background.
+   Selectors are best-effort — unmatched ones are harmless when Douyin ships a redesign. */
+
+/* Left navigation rail, header search bar, right-side info columns */
+#douyin-sidebar,
+#douyin-header,
+#douyin-navigation,
+[data-e2e="douyin-navigation"],
+[data-e2e="douyin-header"],
+.sidebar-container,
+#douyin-right-container,
+[data-e2e="feed-comment-list"],
+[data-e2e="comment-list"],
+.comment-mainContent,
+#related-video-card-login-guide,
+.login-guide-container,
+[class*="download-guide"],
+[class*="DownloadGuide"],
+[class*="app-download"],
+[data-e2e="feed-live-tag"] {
+  display: none !important;
+}
+
+/* Hide player-UI chrome that is useless without a mouse */
+[data-e2e="video-player-hide-tip"],
+.xgplayer-controls .xgplayer-playbackrate,
+.xgplayer-controls .xgplayer-pip,
+.xgplayer-controls .xgplayer-volume {
+  display: none !important;
+}
+
+/* Let the player own the viewport */
+html, body {
+  background: #000 !important;
+  overflow: hidden !important;
+}
+body {
+  margin: 0 !important;
+}
+#douyin-right-container ~ * ,
+#slidelist,
+[data-e2e="feed-active-video"],
+[class*="playerContainer"] {
+  width: 100vw !important;
+  max-width: 100vw !important;
+}
+video {
+  object-fit: contain !important;
+  background: #000 !important;
+}
+
+/* Kill transitions/animations — fewer repaints on weak GPUs */
+*, *::before, *::after {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+/* Scrollbars are noise on a TV */
+::-webkit-scrollbar { display: none !important; }
+* { scrollbar-width: none !important; }

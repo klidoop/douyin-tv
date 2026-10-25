@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "DouyinTV Bridge",
+  "version": "2.0.0",
+  "description": "Remote-control bridge + TV layout trimming for douyin.com inside GeckoView.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "douyintv@local"
+    }
+  },
+  "permissions": [
+    "nativeMessaging",
+    "geckoViewAddons",
+    "nativeMessagingFromContent"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.douyin.com/*"],
+      "js": ["content.js"],
+      "css": ["tv.css"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}
