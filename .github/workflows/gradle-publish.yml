@@ -59,18 +59,22 @@ jobs:
     - name: Build Release APK
       id: build
       run: |
-        echo "=== Checking environment ==="
+        set -o pipefail
         java -version
-        echo "=== Building APK ==="
-        ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee build_output.log
-        echo "=== Build exit code: ${PIPESTATUS[0]} ==="
-        if [ ${PIPESTATUS[0]} -ne 0 ]; then
-          echo "Build failed! Last 100 lines of output:"
-          tail -100 build_output.log
-          exit 1
-        fi
+        ./gradlew assembleRelease --no-daemon --stacktrace --warning-mode all 2>&1 | tee build_output.log
         echo "=== APK files generated ==="
-        find app/build/outputs/apk -name "*.apk" -type f 2>/dev/null || echo "No APK found!"
+        find app/build/outputs -name "*.apk" -type f
+
+    - name: Publish build log to repo (for debugging)
+      if: always()
+      run: |
+        mkdir -p ci-logs
+        tail -400 build_output.log > ci-logs/last-build.txt || true
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add ci-logs/last-build.txt
+        git commit -m "ci: build log for run ${{ github.run_id }} [skip ci]" || true
+        git push || true
 
     - name: Collect APKs (one per ABI)
       id: apk
