@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
 }
 
 // GeckoView = Firefox's rendering engine, shipped INSIDE the APK.
@@ -9,7 +8,7 @@ def geckoviewVersion = "158.0.20261021001945"
 
 android {
     namespace 'com.douyin.tv'
-    compileSdk 36
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.douyin.tv"
@@ -57,11 +56,9 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
+    // Kotlin jvmTarget follows compileOptions.targetCompatibility under built-in Kotlin.
 
-    packagingOptions {
+    packaging {
         jniLibs {
             // GeckoView ships uncompressed native libs and loads them in place.
             useLegacyPackaging = false
