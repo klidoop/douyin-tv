@@ -77,3 +77,13 @@ dependencies {
 
     implementation "org.mozilla.geckoview:geckoview:${geckoviewVersion}"
 }
+
+// AGP 9.4's built-in Kotlin compiler is 2.2.x, but a transitive dependency pulls
+// kotlin-stdlib 2.4.0 whose metadata it cannot read. Pin the stdlib to the compiler's line.
+configurations.configureEach {
+    resolutionStrategy {
+        force 'org.jetbrains.kotlin:kotlin-stdlib:2.2.21',
+              'org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.21',
+              'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21'
+    }
+}
