@@ -8,7 +8,12 @@ def geckoviewVersion = "158.0.20261021001945"
 
 android {
     namespace 'com.douyin.tv'
-    compileSdk 37
+    // GeckoView 158 is built against API 37 minor release 2.
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
 
     defaultConfig {
         applicationId "com.douyin.tv"
